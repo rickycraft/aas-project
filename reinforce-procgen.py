@@ -10,7 +10,7 @@ import tqdm
 from matplotlib import pyplot as plt
 
 import impala
-import model_gym
+import nature
 
 if len(sys.argv) < 2:
   print(f"Usage: {sys.argv[0]} <lr> [clip]")
@@ -75,7 +75,7 @@ obs_space = env.observation_space.shape
 if use_impala:
   model = impala.impala_cnn(obs_space, num_actions)
 else:
-  model = model_gym.build_model_ac(obs_space, num_actions, load_weights=False, init_zero=False)
+  model = nature.build_model_ac(obs_space, num_actions, load_weights=False, init_zero=False)
 if load_weights:
   model.load_weights(weights_file)
 
