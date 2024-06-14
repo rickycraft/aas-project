@@ -1,0 +1,10 @@
+# python venv
+env
+leap-env
+.venv
+logs
+
+__pycache__
+*.keras
+*.h5
+# *.png
