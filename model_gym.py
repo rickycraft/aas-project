@@ -23,3 +23,5 @@ def build_model_ac(input_shape, num_actions, init_zero = False, load_weights = T
   print(model.summary())
   if load_weights:
     model.load_weights(base_weights)
+
+  return model
