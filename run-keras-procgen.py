@@ -12,6 +12,7 @@ import nature
 start_level = os.environ.get("START_LEVEL")
 num_level = int(os.environ.get("NUM_LEVEL", "3"))
 env_name = os.environ.get("ENV_NAME", "fruitbot")
+generate_gif = os.environ.get("GENERATE_GIF", "1") == "1"
 use_impala = os.environ.get("USE_IMPALA", "0") == "1"
 seed = 42
 np.random.seed(seed)
@@ -41,7 +42,9 @@ print(f"num_actions: {num_actions}")
 print(f"obs_space: {obs_space}")
 
 if use_impala:
-  model = impala.impala_cnn(obs_space, num_actions)
+  # check for advantage model
+  adv = '-ad-' in weights_file
+  model = impala.impala_cnn(obs_space, num_actions, advantage=adv)
 else:
   model = nature.build_model_ac(obs_space, num_actions, load_weights=False, init_zero=False)
 model.load_weights(weights_file)
@@ -72,7 +75,8 @@ for episode in range(100):
     if done:
       break
 
-  imageio.mimsave(f'{gif_base}-{episode}.gif', frames, format='gif', fps=15)
+  if generate_gif:
+    imageio.mimsave(f'{gif_base}-{episode}.gif', frames, format='gif', fps=15)
   frames = []
 
   print(f"{episode}\t| Total reward: {np.sum(rewards)}")
